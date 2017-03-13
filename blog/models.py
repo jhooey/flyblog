@@ -13,10 +13,9 @@ class Post(models.Model):
         (3, 'Archive'),
     )
 
-    title = models.CharField(max_length=200, blank=False)
+    title = models.CharField(max_length=200, blank=False, default='Title')
     author = models.ForeignKey(User, blank=False)
-    slug = models.CharField(max_length=200, blank=False)
-    content = models.TextField(default=None, blank=True)
+    content = models.TextField(default="", blank=True)
 
     status = models.IntegerField(choices=STATUS_CHOICES, default=1)
 
@@ -25,4 +24,8 @@ class Post(models.Model):
     posted_at =  models.DateTimeField(blank=True, null=True, editable=True)
 
     def get_absolute_url(self):
-        return reverse('post_update', kwargs={'post_id': self.id})
+        return reverse('update_post', kwargs={'post_id': self.id})
+    
+    def __str__(self):
+        return self.title
+    

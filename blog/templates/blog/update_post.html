@@ -1,1 +1,28 @@
-test
+{% extends "base.html" %}
+{%block title%}Update Post{%endblock%}
+
+{% block content %}
+<h1>Update Post</h1>
+<h3>Author:{{post.author}}</h3>
+
+<form action="{% url 'update_post' post_id=post.id %}" method="post" enctype="multipart/form-data"> 
+	{% csrf_token %}
+	
+	{{form}}
+	
+	<input class="btn btn-info" role="button" type="submit" value="Save">
+</form>
+
+<hr />
+<br />
+{% if post.status != 2 %}
+<a  class="btn btn-success" role="button" href="{% url 'publish_post' post_id=post.id %}"> Publish Post</a>
+{% else %}
+<strong>Date posted:</strong>  {{post.posted_at}}
+
+{% endif %}
+<br />
+<br/ >
+
+<a  class="btn btn-danger" role="button"  href="{% url 'delete_post' post_id=post.id %}">Delete Post</a>
+{% endblock %}

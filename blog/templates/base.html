@@ -14,6 +14,47 @@
 </head>
 
 <body>
+
+<div class="container">
+
+<div class="row rounded" style="background-color: rgba(0, 0, 0, 0.2);padding: 10px;border-radius:0 0 30px 30px;">
+	<div class="col-xs-2 text-center">
+		<a  class="btn btn-info" role="button" href="/">Home</a>
+	</div>
+
+{% if user.is_authenticated %}
+	<div class="col-xs-2 text-center">
+		<h4>User Functions:</h4>
+	</div>
+	<div class="col-xs-2 text-center">
+		<a  class="btn btn-info" role="button" href="{% url 'create_post' %}">Create a new Post</a>	
+	</div>
+	<div class="col-xs-2 text-center">
+		<a  class="btn btn-info" role="button" href="{% url 'drafts' %}">Drafts</a>
+	</div>
+	<div class="col-xs-2 col-xs-offset-2 text-center">
+		<a  class="btn btn-info" role="button" href="{% url 'logout'%}">Logout</a>
+	</div>
+{% else %}
+	<div class="col-xs-2 col-xs-offset-2  text-center">
+		<a  class="btn btn-info" role="button" href="./admin/">Login</a>
+	</div>
+{% endif %}
+</div>
+
+{% if messages %}
+<div class="alert alert-success">
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+</div>
+{% endif %}
+
 {% block content %}{% endblock %}
+
+</div>
+
 </body>
 </html>
