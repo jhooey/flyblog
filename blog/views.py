@@ -9,28 +9,37 @@ from blog.models import Post
 from blog.forms import PostForm
 
 
-#all users to logout. We currently only support super users
+'''
+all users to logout. We currently only support super users
+'''
 from django.contrib.auth import logout
-
 def logout_view(request):
     logout(request)
     
     return redirect('blog')
     
-#main page. Lists all of the posted blog posts
+
+'''
+Main page 
+Lists all of the posted blog posts
+'''
 def blog(request):
     posts = Post.objects.all().filter(status=2).order_by('-created_at')
     return render(request, 'blog/blog.html', {'posts':posts})
 
 
-#Lists all of the unpublished blog posts
+'''
+Lists all of the unpublished blog posts
+'''
 @login_required
 def drafts(request):
-    posts = Post.objects.all().filter(status=1).order_by('-created_at')
+    posts = Post.objects.all().filter(status=1).order_by('-modified_at')
     return render(request, 'blog/drafts.html', {'posts':posts})
   
 
-#Creates a post for you so that you can start editing
+'''
+Creates a post for you so that you can start editing
+'''
 @login_required
 def create_post(request):
     post = Post.objects.create(author = request.user,)
@@ -38,7 +47,9 @@ def create_post(request):
     
     return redirect(post)
 
-#Any changes to a post must pass through this view
+'''
+Any changes to a post must pass through this view
+'''
 @login_required
 def update_post(request, post_id):
     post=Post.objects.get(id=post_id)
@@ -65,7 +76,9 @@ def update_post(request, post_id):
     return render(request, 'blog/update_post.html', {'post':post, 'form': post_form})
 
 
-#Updates the post status to Posted
+'''
+Updates the post status to "Posted"
+'''
 @login_required
 def publish_post(request, post_id):
     post=Post.objects.get(id=post_id)
@@ -87,7 +100,9 @@ def publish_post(request, post_id):
     
     
     
-#Changes the post status to Archived. Nothing is truly deleted
+'''
+Changes the post status to "Archived". Nothing is truly deleted!
+'''
 @login_required
 def delete_post(request, post_id):
     post=Post.objects.get(id=post_id)

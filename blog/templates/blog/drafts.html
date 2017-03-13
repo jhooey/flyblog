@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{%block title%}Blog{%endblock%}
+{%block title%}Drafts{%endblock%}
 
 {% block content %}
 <h1> Drafts</h1>
@@ -8,14 +8,20 @@
 {% for post in posts %}
 <div class="row">
 	<div class="col-xs-12">
-			<br />
-			<strong>Title</strong>: {{ post.title }} <br/>
-			<strong>Content</strong>: <blockquote>{{post.content}}</blockquote><br />
-			<strong>Date Modified</strong>: {{post.modified_at}}<br />
-			<strong>Date Created</strong>: {{post.created_at}}<br />
-			<a  class="btn btn-info" role="button" href="{% url 'update_post' post.id %}">Edit post</a>
-			<hr />
-			<br />
+		<br />
+		<strong>Title</strong>: {{ post.title }} <br/>
+		<strong>Content</strong>: <blockquote>{{post.content}}</blockquote><br />
+	</div>
+	<div class="col-xs-6">
+		<strong>Date Modified</strong>: {{post.modified_at}}
+	</div>
+	<div class="col-xs-6">
+		<strong>Date Created</strong>: {{post.created_at}}<br />
+	</div>
+	<div class="col-xs-12">
+		<a  class="btn btn-info" role="button" href="{% url 'update_post' post.id %}">Edit post</a>
+		<hr />
+		<br />
 	</div>
 </div>
 {% endfor %}
