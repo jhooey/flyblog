@@ -4,14 +4,22 @@
 {% block content %}
 <h1>Update Post</h1>
 <h3>Author:{{post.author}}</h3>
-
-<form action="{% url 'update_post' post_id=post.id %}" method="post" enctype="multipart/form-data"> 
-	{% csrf_token %}
-	
-	{{form}}
-	
-	<input class="btn btn-info" role="button" type="submit" value="Save">
-</form>
+<div class="row">
+	<div class="col-xs-12">
+		<form id="post_form" action="{% url 'update_post' post_id=post.id %}" method="post" enctype="multipart/form-data"> 
+			{% csrf_token %}
+			
+			{{form}}
+			
+			<input class="btn btn-info" role="button" type="submit" value="Save">
+		</form>
+	</div>
+</div>
+<div class="row">
+	<div id="autosave_div" class="col-xs-12 alert alert-info">
+		<div id="autosave_status"></div>
+	</div>
+</div>
 
 <hr />
 <br />
@@ -25,4 +33,31 @@
 <br/ >
 
 <a  class="btn btn-danger" role="button"  href="{% url 'delete_post' post_id=post.id %}">Delete Post</a>
+
+
+
+<script>
+//autosave post content
+window.setInterval( 
+function (){
+
+$.post("{% url 'update_post' post_id=post.id %}", 
+		$('#post_form').serialize())
+		
+		.done(function(data, status) {
+			$('#autosave_div').slideUp("default", function(){
+				var dt = new Date();
+				$('#autosave_status').text("Last autosaved at " + dt);
+			});
+			$('#autosave_div').slideDown();
+		});
+		
+}, 30000); //autosave every 30 seconds
+</script>
+
+
+
+
+
+
 {% endblock %}

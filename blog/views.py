@@ -24,7 +24,8 @@ Main page
 Lists all of the posted blog posts
 '''
 def blog(request):
-    posts = Post.objects.all().filter(status=2).order_by('-created_at')
+    posts = Post.objects.all().filter(status=2).order_by(
+                                                    '-posted_at')
     return render(request, 'blog/blog.html', {'posts':posts})
 
 
@@ -33,7 +34,8 @@ Lists all of the unpublished blog posts
 '''
 @login_required
 def drafts(request):
-    posts = Post.objects.all().filter(status=1).order_by('-modified_at')
+    posts = Post.objects.all().filter(status=1).order_by(
+                                                    '-modified_at')
     return render(request, 'blog/drafts.html', {'posts':posts})
   
 
@@ -69,11 +71,14 @@ def update_post(request, post_id):
             if request.is_ajax():
                 return HttpResponse("Success")
             else:     
-                messages.success(request, 'Post Updated Successfully') 
+                messages.success(request, 
+                                 'Post Updated Successfully') 
+                
         elif request.is_ajax():
             return HttpResponse("Fail")
             
-    return render(request, 'blog/update_post.html', {'post':post, 'form': post_form})
+    return render(request, 'blog/update_post.html', 
+                  {'post':post, 'form': post_form})
 
 
 '''
